@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:leica-camera.com)",
+      "WebFetch(domain:leicarumors.com)"
+    ]
+  }
+}

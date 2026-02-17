@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leica M11 — Le M. Réinventé.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000;
+    --white: #f5f5f7;
+    --text-primary: #f5f5f7;
+    --text-secondary: #86868b;
+    --text-dim: #6e6e73;
+    --surface: #1d1d1f;
+    --red: #e30613;
+    --blue: #2997ff;
+    --font: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--black);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ===== NAV ===== */
+  .leica-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    height: 56px;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px;
+  }
+
+  .leica-nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 1440px; padding: 0 40px;
+  }
+
+  .leica-nav-left { display: flex; align-items: center; gap: 36px; }
+
+  .leica-nav-logo svg { height: 16px; fill: #fff; display: block; }
+
+  .leica-nav-links { display: flex; gap: 28px; list-style: none; }
+  .leica-nav-links a {
+    color: rgba(255,255,255,0.6); text-decoration: none;
+    font-weight: 400; font-size: 13px; letter-spacing: 0.01em;
+    transition: color 0.2s; padding: 4px 0;
+  }
+  .leica-nav-links a:hover { color: #fff; }
+
+  .leica-nav-right { display: flex; align-items: center; gap: 20px; }
+
+  .leica-nav-icon {
+    background: none; border: none; cursor: pointer; padding: 6px;
+    color: rgba(255,255,255,0.6); transition: color 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leica-nav-icon:hover { color: #fff; }
+  .leica-nav-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .leica-nav-burger {
+    display: none; background: none; border: none; cursor: pointer; padding: 6px;
+    color: rgba(255,255,255,0.6); transition: color 0.2s;
+  }
+  .leica-nav-burger:hover { color: #fff; }
+  .leica-nav-burger svg { width: 22px; height: 22px; fill: currentColor; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 90px 24px 40px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-size: 17px; font-weight: 600;
+    background: linear-gradient(90deg, var(--red), #ff6b6b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(56px, 10vw, 96px);
+    font-weight: 800; letter-spacing: -0.04em;
+    line-height: 1; margin-bottom: 8px;
+    opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-tagline {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 300; color: var(--text-secondary);
+    margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-cta-row {
+    display: flex; gap: 20px; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .link-arrow {
+    font-size: 19px; font-weight: 400; color: var(--red);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .link-arrow:hover span { transform: translateX(4px); }
+  .link-arrow span { transition: transform 0.2s; display: inline-block; }
+
+  .hero-product {
+    position: relative; width: 100%; max-width: 740px;
+    opacity: 0; animation: scaleReveal 1.2s 0.5s forwards;
+    perspective: 800px;
+  }
+  .hero-product img {
+    width: 100%; height: auto;
+    filter: drop-shadow(0 80px 160px rgba(0,0,0,0.9));
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+  }
+
+  .hero-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 140%; height: 140%;
+    background: radial-gradient(ellipse, rgba(227,6,19,0.04) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  /* === FLASH EFFECT === */
+  .hero-flash {
+    position: absolute;
+    top: 41.5%; left: 37.15%;
+    transform: translate(-50%, -50%);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+    animation: flashBurst 1.2s 1.6s ease-out forwards;
+  }
+
+  .hero-flash::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.1) 30%, transparent 70%);
+    opacity: 0;
+    animation: flashGlow 1.2s 1.6s ease-out forwards;
+  }
+
+  .hero-flash-screen {
+    position: absolute; inset: 0;
+    background: #fff;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 5;
+    animation: flashScreen 0.8s 1.6s ease-out forwards;
+  }
+
+  @keyframes flashBurst {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    8% { opacity: 1; transform: translate(-50%,-50%) scale(1.5); box-shadow: 0 0 60px 30px rgba(255,255,255,0.8); }
+    30% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); box-shadow: 0 0 30px 10px rgba(255,255,255,0.3); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.8); box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  }
+
+  @keyframes flashGlow {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    8% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+    40% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  }
+
+  @keyframes flashScreen {
+    0% { opacity: 0; }
+    6% { opacity: 0.4; }
+    20% { opacity: 0.1; }
+    100% { opacity: 0; }
+  }
+
+  /* === SCROLL DOWN ICON === */
+  .hero-scroll-down {
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 0.8s 2s forwards;
+    z-index: 10;
+    text-decoration: none;
+  }
+
+  .hero-scroll-mouse {
+    width: 26px; height: 42px;
+    border: 2px solid var(--red);
+    border-radius: 14px;
+    display: flex; justify-content: center;
+    padding-top: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .hero-scroll-down:hover .hero-scroll-mouse {
+    border-color: #ff3b3b;
+  }
+
+  .hero-scroll-wheel {
+    width: 3px; height: 8px;
+    background: var(--red);
+    border-radius: 2px;
+    animation: scrollWheel 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollWheel {
+    0% { opacity: 1; transform: translateY(0); }
+    60% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 0; transform: translateY(10px); }
+  }
+
+  /* === FLOATING PARTICLES === */
+  .particles {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    animation: float linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* ===== DEZOOM RANGEFINDER ===== */
+  .dezoom-section {
+    position: relative;
+    height: 300vh;
+    background: #000;
+  }
+
+  .dezoom-sticky {
+    position: sticky; top: 0;
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .dezoom-img-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    will-change: transform;
+    transform: scale(7);
+    transform-origin: 48.3% 67%;
+  }
+
+  .dezoom-img {
+    width: 100%; height: auto; display: block;
+  }
+
+  .dezoom-screen {
+    position: absolute;
+    top: 51%; left: 29.2%;
+    width: 38.1%; height: 36.5%;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .dezoom-screen-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .dezoom-text {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  .dezoom-eyebrow {
+    font-size: 5px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 3px;
+  }
+
+  .dezoom-title {
+    font-size: 12px;
+    font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.08; margin-bottom: 4px;
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+  }
+
+  .dezoom-desc {
+    font-size: 4px; font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+
+  /* ===== INTRO STATEMENT ===== */
+  .intro-statement {
+    padding: 120px 24px;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .intro-statement p {
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .intro-statement .dim { color: var(--text-dim); }
+
+  /* ===== CINEMATIC FULL-WIDTH SECTIONS ===== */
+  .cin-full {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .cin-bg {
+    position: absolute; inset: 0;
+  }
+
+  .cin-bg img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .cin-full:hover .cin-bg img { transform: scale(1.06); }
+
+  .cin-bg-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+  }
+
+  .cin-full-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 60px 24px;
+    max-width: 700px;
+  }
+
+  .cin-full-eyebrow {
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 12px;
+  }
+
+  .cin-full-title {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 800; letter-spacing: -0.035em;
+    line-height: 1.05; margin-bottom: 16px;
+  }
+
+  .cin-full-desc {
+    font-size: 17px; font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55; max-width: 500px; margin: 0 auto;
+  }
+
+  /* ===== COUNTER SPECS ===== */
+  .counter-section {
+    padding: 140px 24px;
+    text-align: center;
+    background: var(--black);
+  }
+
+  .counter-eyebrow {
+    font-size: 14px; font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .counter-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800; letter-spacing: -0.03em;
+    margin-bottom: 80px;
+  }
+
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1100px; margin: 0 auto; gap: 40px;
+  }
+
+  .counter-item { padding: 20px; }
+
+  .counter-num {
+    font-size: clamp(56px, 8vw, 80px);
+    font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+    background: linear-gradient(180deg, #fff 30%, #86868b 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .counter-label {
+    font-size: 15px; font-weight: 600; color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .counter-desc {
+    font-size: 13px; color: var(--text-dim); line-height: 1.5;
+    max-width: 260px; margin: 0 auto;
+  }
+
+  /* ===== STICKY COMPARISON ===== */
+  .sticky-section {
+    position: relative;
+    min-height: 300vh;
+  }
+
+  .sticky-visual {
+    position: sticky; top: 0;
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .sticky-visual img {
+    max-width: 500px; width: 60%;
+    filter: drop-shadow(0 40px 80px rgba(0,0,0,0.8));
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s;
+  }
+
+  .sticky-visual-video {
+    position: relative;
+    width: 95%;
+    max-width: 960px;
+    aspect-ratio: 16/9;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+
+  .sticky-visual-video iframe {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 140%; height: 140%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+  }
+
+  .sticky-cards {
+    position: absolute; top: 0; right: 0; width: 45%;
+    padding: 100vh 40px 50vh;
+    display: flex; flex-direction: column; gap: 50vh;
+  }
+
+  .sticky-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .sticky-card-eyebrow {
+    font-size: 12px; font-weight: 600;
+    color: var(--red); text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+
+  .sticky-card-title {
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+
+  .sticky-card-desc {
+    font-size: 15px; color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== FEATURE TILES ===== */
+  .tiles-section { padding: 20px; max-width: 1200px; margin: 0 auto; }
+
+  .tiles-header {
+    text-align: center; padding: 80px 24px 60px;
+  }
+
+  .tiles-header-eyebrow {
+    font-size: 14px; font-weight: 600;
+    color: var(--text-secondary); text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+
+  .tiles-header-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800; letter-spacing: -0.03em;
+  }
+
+  .tiles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .tile {
+    border-radius: 28px;
+    padding: 48px 40px;
+    min-height: 480px;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    position: relative; overflow: hidden;
+    transition: transform 0.4s;
+  }
+
+  .tile:hover { transform: scale(0.985); }
+
+  .tile-dark { background: var(--surface); }
+  .tile-light { background: #f5f5f7; color: var(--black); }
+
+  .tile-icon {
+    width: 48px; height: 48px; margin-bottom: 16px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .tile-dark .tile-icon { background: rgba(255,255,255,0.08); }
+  .tile-light .tile-icon { background: rgba(0,0,0,0.06); }
+
+  .tile-eyebrow {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .tile-dark .tile-eyebrow { color: var(--text-secondary); }
+  .tile-light .tile-eyebrow { color: var(--red); }
+
+  .tile-title {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 10px;
+  }
+
+  .tile-desc {
+    font-size: 14px; line-height: 1.6; max-width: 340px;
+  }
+  .tile-dark .tile-desc { color: var(--text-secondary); }
+  .tile-light .tile-desc { color: var(--text-dim); }
+
+  .tile-bg-text {
+    position: absolute; top: 24px; right: 24px;
+    font-size: 100px; font-weight: 900;
+    opacity: 0.03; line-height: 1; pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+
+  .tile-full {
+    grid-column: 1 / -1;
+    text-align: center; align-items: center;
+    justify-content: center;
+    min-height: 360px;
+    background: linear-gradient(145deg, #1d1d1f, #0d0d0d);
+  }
+
+  .tile-full .tile-title {
+    font-size: clamp(28px, 4vw, 40px); max-width: 600px;
+  }
+
+  .tile-full .tile-desc { max-width: 500px; text-align: center; }
+
+  /* ===== GALLERY SCROLL ===== */
+  .gallery-section {
+    padding: 100px 0;
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .gallery-header {
+    text-align: center; padding: 0 24px 60px;
+  }
+
+  .gallery-header .cin-full-eyebrow { margin-bottom: 8px; }
+
+  .gallery-header h2 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800; letter-spacing: -0.03em;
+  }
+
+  .gallery-track {
+    display: flex; gap: 16px;
+    animation: marquee 40s linear infinite;
+    width: max-content;
+  }
+
+  .gallery-track:hover { animation-play-state: paused; }
+
+  .gallery-img {
+    flex: 0 0 auto;
+    width: clamp(320px, 50vw, 650px);
+    aspect-ratio: 16/10;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .gallery-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s;
+  }
+
+  .gallery-img:hover img { transform: scale(1.06); }
+
+  .gallery-img-label {
+    position: absolute; bottom: 14px; left: 14px;
+    font-size: 11px; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(12px);
+    padding: 5px 10px; border-radius: 8px;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== COMPARE SECTION ===== */
+  .compare-section {
+    padding: 120px 24px;
+    background: var(--surface);
+    text-align: center;
+  }
+
+  .compare-section h2 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800; letter-spacing: -0.03em;
+    margin-bottom: 60px;
+  }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 960px; margin: 0 auto; gap: 16px;
+  }
+
+  .compare-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px; padding: 32px 24px;
+    transition: transform 0.3s, border-color 0.3s;
+    text-align: left;
+  }
+
+  .compare-card:hover { transform: translateY(-6px); }
+  .compare-card.featured { border-color: var(--red); background: rgba(227,6,19,0.04); }
+
+  .compare-card-name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .compare-card-tag { font-size: 11px; color: var(--red); font-weight: 600; min-height: 16px; margin-bottom: 20px; }
+
+  .compare-row-item {
+    display: flex; justify-content: space-between;
+    font-size: 13px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .compare-row-key { color: var(--text-dim); }
+  .compare-row-val { color: var(--white); font-weight: 600; }
+
+  .compare-card-price {
+    margin-top: 20px;
+    font-size: 24px; font-weight: 700;
+  }
+
+  .compare-card-btn {
+    display: block; margin-top: 16px;
+    text-align: center;
+    padding: 10px; border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+  }
+
+  .compare-card.featured .compare-card-btn {
+    background: var(--red); color: white;
+  }
+  .compare-card.featured .compare-card-btn:hover { opacity: 0.9; }
+
+  .compare-card:not(.featured) .compare-card-btn {
+    background: rgba(255,255,255,0.08); color: var(--blue);
+  }
+
+  /* ===== CTA ===== */
+  .cta-final {
+    padding: 160px 24px;
+    text-align: center;
+    position: relative;
+  }
+
+  .cta-final::before {
+    content: '';
+    position: absolute; top: 40%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(227,6,19,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .cta-final h2 {
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 800; letter-spacing: -0.04em;
+    line-height: 1.05; margin-bottom: 16px;
+    position: relative;
+  }
+
+  .cta-final p {
+    font-size: 19px; color: var(--text-secondary);
+    margin-bottom: 40px; position: relative;
+  }
+
+  .cta-btns {
+    display: flex; gap: 12px; justify-content: center;
+    flex-wrap: wrap; position: relative;
+  }
+
+  .btn-pill {
+    padding: 14px 28px;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 17px; font-weight: 500;
+    text-decoration: none; border: none;
+    cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  .btn-red { background: var(--red); color: white; }
+  .btn-red:hover { filter: brightness(0.9); transform: scale(1.02); }
+
+  .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+  .btn-outline:hover { background: var(--blue); color: white; }
+
+  /* ===== FOOTER ===== */
+  .leica-footer {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .leica-footer-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 64px 40px 32px;
+  }
+
+  .leica-footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 56px; gap: 40px; flex-wrap: wrap;
+  }
+
+  .leica-footer-newsletter { max-width: 380px; }
+  .leica-footer-newsletter-title {
+    font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px;
+  }
+  .leica-footer-newsletter-desc {
+    font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px;
+  }
+  .leica-footer-newsletter-form { display: flex; gap: 8px; }
+  .leica-footer-newsletter-form input {
+    flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #fff;
+    font-family: var(--font); outline: none; transition: border-color 0.2s;
+  }
+  .leica-footer-newsletter-form input::placeholder { color: var(--text-dim); }
+  .leica-footer-newsletter-form input:focus { border-color: rgba(255,255,255,0.3); }
+  .leica-footer-newsletter-form button {
+    background: #fff; color: #000; border: none; border-radius: 6px;
+    padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: var(--font); transition: opacity 0.2s; white-space: nowrap;
+  }
+  .leica-footer-newsletter-form button:hover { opacity: 0.85; }
+
+  .leica-footer-social { display: flex; gap: 16px; align-items: center; }
+  .leica-footer-social a {
+    color: rgba(255,255,255,0.5); transition: color 0.2s; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .leica-footer-social a:hover { color: #fff; }
+  .leica-footer-social svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .leica-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 32px; margin-bottom: 48px;
+  }
+
+  .leica-footer-col-title {
+    font-size: 13px; font-weight: 600; color: #fff;
+    margin-bottom: 16px;
+  }
+  .leica-footer-col a {
+    display: block; font-size: 13px; color: var(--text-dim);
+    text-decoration: none; margin-bottom: 10px; transition: color 0.2s;
+    line-height: 1.4;
+  }
+  .leica-footer-col a:hover { color: #fff; }
+
+  .leica-footer-bottom {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  .leica-footer-bottom-left {
+    display: flex; align-items: center; gap: 20px;
+  }
+
+  .leica-footer-logo svg { height: 14px; fill: rgba(255,255,255,0.4); }
+
+  .leica-footer-copy {
+    font-size: 11px; color: var(--text-dim);
+  }
+
+  .leica-footer-bottom-right { display: flex; gap: 20px; }
+  .leica-footer-bottom-right a {
+    font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  }
+  .leica-footer-bottom-right a:hover { color: #fff; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleReveal {
+    from { opacity: 0; transform: scale(0.88) translateY(40px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .anim {
+    opacity: 0; transform: translateY(50px);
+    transition: opacity 0.85s cubic-bezier(0.25,0.46,0.45,0.94),
+                transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .anim.visible { opacity: 1; transform: translateY(0); }
+
+  .anim-scale {
+    opacity: 0; transform: scale(0.88);
+    transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .anim-scale.visible { opacity: 1; transform: scale(1); }
+
+  /* stagger */
+  .stagger > *:nth-child(1) { transition-delay: 0s; }
+  .stagger > *:nth-child(2) { transition-delay: 0.08s; }
+  .stagger > *:nth-child(3) { transition-delay: 0.16s; }
+  .stagger > *:nth-child(4) { transition-delay: 0.24s; }
+  .stagger > *:nth-child(5) { transition-delay: 0.32s; }
+  .stagger > *:nth-child(6) { transition-delay: 0.4s; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .leica-nav-links { display: none; }
+    .leica-nav-burger { display: flex; }
+    .leica-nav-inner { padding: 0 20px; }
+    .counter-grid { grid-template-columns: 1fr 1fr; }
+    .tiles-grid { grid-template-columns: 1fr; }
+    .compare-row { grid-template-columns: 1fr; max-width: 380px; }
+    .sticky-section { min-height: auto; }
+    .sticky-visual { position: relative; height: auto; padding: 80px 24px; }
+    .sticky-visual img { max-width: 300px; width: 80%; }
+    .sticky-visual-video { width: 90%; max-width: 400px; }
+    .sticky-cards { position: relative; width: 100%; padding: 0 24px 80px; gap: 24px; }
+    .leica-footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .leica-footer-inner { padding: 48px 20px 24px; }
+    .leica-footer-top { flex-direction: column; }
+  }
+
+  @media (max-width: 600px) {
+    .counter-grid { grid-template-columns: 1fr; }
+    .leica-footer-grid { grid-template-columns: 1fr; }
+    .leica-footer-bottom { flex-direction: column; align-items: flex-start; }
+    .leica-footer-bottom-right { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="particles" id="particles"></div>
+  <p class="hero-eyebrow">Nouveau</p>
+  <h1>Leica M11</h1>
+  <p class="hero-tagline">Le M. Réinventé.</p>
+  <div class="hero-cta-row">
+    <a href="#buy" class="link-arrow">Acheter <span>›</span></a>
+    <a href="https://leica-camera.com/fr-FR/service/rendez-vous-avec-un-expert-fr" class="link-arrow">Rendez-vous avec un expert <span>›</span></a>
+  </div>
+  <div class="hero-product">
+    <div class="hero-glow"></div>
+    <div class="hero-flash"></div>
+    <div class="hero-flash-screen"></div>
+    <img src="https://leica-camera.com/sites/default/files/styles/meta_tag_product_image/public/pm-64203-20200__M11_black.png?itok=spLmZYM0"
+         alt="Leica M11 Noir"
+         id="heroImg"
+         onerror="this.src='https://leica-camera.com/sites/default/files/styles/menu_product_thumbnail_desktop/public/2024-07/cameraproduct_m11_black.png?itok=WuDtF_Ta'">
+  </div>
+  <a href="#sensor" class="hero-scroll-down" aria-label="Scroll down">
+    <div class="hero-scroll-mouse">
+      <div class="hero-scroll-wheel"></div>
+    </div>
+  </a>
+</section>
+
+<!-- ===== INTRO STATEMENT ===== -->
+<div class="intro-statement">
+  <p class="anim">
+    60 mégapixels plein format.<br>
+    <span class="dim">Processeur Maestro III. 256 Go de stockage interne. Le viseur télémétrique le plus précis jamais conçu. Et un héritage de 70 ans d'optique légendaire.</span>
+  </p>
+</div>
+
+<!-- ===== CINEMATIC — SENSOR ===== -->
+<section class="cin-full" id="sensor">
+  <div class="cin-bg">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=85" alt="Paysage montagne" class="anim-scale">
+    <div class="cin-bg-overlay"></div>
+  </div>
+  <div class="cin-full-content">
+    <p class="cin-full-eyebrow anim">Capteur BSI CMOS</p>
+    <h2 class="cin-full-title anim">60 millions de pixels.<br>Zéro compromis.</h2>
+    <p class="cin-full-desc anim">Le capteur plein format avec Triple Resolution Technology vous donne le choix : 60, 36 ou 18 MP. Chaque mode utilise la totalité du capteur. Chaque pixel compte.</p>
+  </div>
+</section>
+
+<!-- ===== COUNTER SPECS ===== -->
+<section class="counter-section" id="specs">
+  <p class="counter-eyebrow anim">Performance</p>
+  <h2 class="counter-title anim">Pensé pour<br>les exigeants.</h2>
+  <div class="counter-grid stagger">
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="60" data-suffix=" MP">0</div>
+      <div class="counter-label">Résolution maximale</div>
+      <div class="counter-desc">Capteur BSI CMOS plein format avec triple résolution</div>
+    </div>
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="64" data-prefix="ISO ">0</div>
+      <div class="counter-label">Sensibilité native</div>
+      <div class="counter-desc">Plage étendue de 64 à 50 000 ISO</div>
+    </div>
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="256" data-suffix=" Go">0</div>
+      <div class="counter-label">Stockage interne</div>
+      <div class="counter-desc">Mémoire embarquée + slot carte SD UHS-II</div>
+    </div>
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="461" data-suffix=" g">0</div>
+      <div class="counter-label">Ultra léger</div>
+      <div class="counter-desc">Aluminium et laiton, robuste et compact</div>
+    </div>
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="15" data-suffix=" stops">0</div>
+      <div class="counter-label">Plage dynamique</div>
+      <div class="counter-desc">Détails préservés des ombres aux hautes lumières</div>
+    </div>
+    <div class="counter-item anim">
+      <div class="counter-num" data-target="700" data-suffix="">0</div>
+      <div class="counter-label">Photos par charge</div>
+      <div class="counter-desc">Batterie BP-SCL7, recharge USB-C</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CINEMATIC — RANGEFINDER (DEZOOM) ===== -->
+<section class="dezoom-section" id="rangefinder">
+  <div class="dezoom-sticky">
+    <div class="dezoom-img-wrap">
+      <img src="m11_back.png" alt="Leica M11 dos" class="dezoom-img">
+      <div class="dezoom-screen">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1600&q=85" alt="Portrait" class="dezoom-screen-img">
+        <div class="dezoom-text">
+          <p class="dezoom-eyebrow">Viseur télémétrique</p>
+          <h2 class="dezoom-title">Voyez le monde.<br>Pas un écran.</h2>
+          <p class="dezoom-desc">Grossissement 0,73×, cadres lumineux, mise au point manuelle légendaire. La connexion directe entre votre œil et votre sujet. Sans latence, sans délai.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STICKY FEATURE SCROLL ===== -->
+<section class="sticky-section">
+  <div class="sticky-visual">
+    <div class="sticky-visual-video">
+      <iframe data-src="https://player.vimeo.com/video/1017889815?muted=1&controls=0&loop=0&app_id=122963&background=1&autoplay=1"
+              allow="autoplay; fullscreen"
+              title="Leica M11 Maestro III"
+              id="vimeoFrame"></iframe>
+    </div>
+  </div>
+  <div class="sticky-cards">
+    <div class="sticky-card anim">
+      <p class="sticky-card-eyebrow">Maestro III</p>
+      <h3 class="sticky-card-title">Un processeur à la hauteur.</h3>
+      <p class="sticky-card-desc">Traitement ultra-rapide, mise en mémoire tampon fluide et réactivité instantanée. Le cerveau derrière chaque pixel du M11.</p>
+    </div>
+    <div class="sticky-card anim">
+      <p class="sticky-card-eyebrow">Obturateur</p>
+      <h3 class="sticky-card-title">Jusqu'à 1/16 000 s.</h3>
+      <p class="sticky-card-desc">L'obturateur électronique vous libère des filtres ND. Grandes ouvertures en plein soleil, sans compromis.</p>
+    </div>
+    <div class="sticky-card anim">
+      <p class="sticky-card-eyebrow">Monture M</p>
+      <h3 class="sticky-card-title">70 ans. Tous compatibles.</h3>
+      <p class="sticky-card-desc">Chaque objectif M fabriqué depuis 1954 fonctionne sur le M11. Le codage 6-bit optimise automatiquement chaque combinaison.</p>
+    </div>
+    <div class="sticky-card anim">
+      <p class="sticky-card-eyebrow">Connectivité</p>
+      <h3 class="sticky-card-title">USB-C. Wi-Fi. Bluetooth.</h3>
+      <p class="sticky-card-desc">Transférez, pilotez, partagez. Leica FOTOS et la certification "Made for iPhone" pour un workflow sans friction.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE TILES ===== -->
+<div class="tiles-header" id="features">
+  <p class="tiles-header-eyebrow anim">En détail</p>
+  <h2 class="tiles-header-title anim">Chaque détail<br>a été pensé.</h2>
+</div>
+<section class="tiles-section">
+  <div class="tiles-grid stagger">
+    <div class="tile tile-dark anim">
+      <div class="tile-bg-text">60</div>
+      <div class="tile-icon">📐</div>
+      <p class="tile-eyebrow">Triple résolution</p>
+      <h3 class="tile-title">60, 36 ou 18 MP.<br>Vous choisissez.</h3>
+      <p class="tile-desc">Trois résolutions, un seul capteur. Chaque mode exploite la totalité de la surface pour une qualité maximale à chaque échelle.</p>
+    </div>
+    <div class="tile tile-light anim">
+      <div class="tile-bg-text" style="color:#1d1d1f">M³</div>
+      <div class="tile-icon">⚡</div>
+      <p class="tile-eyebrow">Processeur</p>
+      <h3 class="tile-title">Maestro III.<br>Puissance brute.</h3>
+      <p class="tile-desc">Buffer généreux, traitement 14-bit et mode rafale ultra-réactif, même en 60 MP.</p>
+    </div>
+    <div class="tile tile-light anim">
+      <div class="tile-bg-text" style="color:#1d1d1f">256</div>
+      <div class="tile-icon">💾</div>
+      <p class="tile-eyebrow">Stockage</p>
+      <h3 class="tile-title">256 Go intégrés.<br>Ne manquez de rien.</h3>
+      <p class="tile-desc">Mémoire interne massive + slot SD UHS-II. Sauvegarde simultanée sur deux supports.</p>
+    </div>
+    <div class="tile tile-dark anim">
+      <div class="tile-bg-text">USB</div>
+      <div class="tile-icon">🔌</div>
+      <p class="tile-eyebrow">Charge</p>
+      <h3 class="tile-title">USB-C.<br>Toujours prêt.</h3>
+      <p class="tile-desc">Rechargez directement via USB-C. Jusqu'à 700 photos par charge avec la batterie BP-SCL7.</p>
+    </div>
+    <div class="tile tile-full tile-dark anim">
+      <div class="tile-icon">👆</div>
+      <p class="tile-eyebrow" style="color:var(--text-secondary)">Écran tactile</p>
+      <h3 class="tile-title">2,95 pouces. 2,33 M de pixels.<br>800 nits de luminosité.</h3>
+      <p class="tile-desc">Naviguez, zoomez, paramétrez. Un écran LCD tactile qui rend justice à chaque image, même en plein soleil.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <p class="cin-full-eyebrow anim">Galerie</p>
+    <h2 class="anim">Shot on Leica M11.</h2>
+  </div>
+  <div class="gallery-track" id="galleryTrack">
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80" alt="Architecture"><div class="gallery-img-label">35mm Summilux · f/1.4 · 1/2000s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=80" alt="Portrait"><div class="gallery-img-label">75mm Summilux · f/1.4 · 1/250s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1551373884-8a0750074df7?w=900&q=80" alt="Street"><div class="gallery-img-label">50mm Summicron · f/2 · 1/500s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80" alt="Nature"><div class="gallery-img-label">28mm Elmarit · f/2.8 · 1/1000s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900&q=80" alt="Montagne étoilée"><div class="gallery-img-label">21mm Super-Elmar · f/3.4 · 30s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1518893063132-36e46dbe2428?w=900&q=80" alt="Noir et blanc"><div class="gallery-img-label">35mm Summilux · f/1.4 · 1/125s</div></div>
+    <!-- Duplicated for seamless loop -->
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80" alt="Architecture"><div class="gallery-img-label">35mm Summilux · f/1.4 · 1/2000s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=80" alt="Portrait"><div class="gallery-img-label">75mm Summilux · f/1.4 · 1/250s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1551373884-8a0750074df7?w=900&q=80" alt="Street"><div class="gallery-img-label">50mm Summicron · f/2 · 1/500s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80" alt="Nature"><div class="gallery-img-label">28mm Elmarit · f/2.8 · 1/1000s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900&q=80" alt="Montagne étoilée"><div class="gallery-img-label">21mm Super-Elmar · f/3.4 · 30s</div></div>
+    <div class="gallery-img"><img src="https://images.unsplash.com/photo-1518893063132-36e46dbe2428?w=900&q=80" alt="Noir et blanc"><div class="gallery-img-label">35mm Summilux · f/1.4 · 1/125s</div></div>
+  </div>
+</section>
+
+<!-- ===== COMPARE ===== -->
+<section class="compare-section" id="compare">
+  <h2 class="anim">Quel M11 est fait pour vous ?</h2>
+  <div class="compare-row stagger">
+    <div class="compare-card featured anim">
+      <div class="compare-card-name">M11</div>
+      <div class="compare-card-tag">Le plus polyvalent</div>
+      <div class="compare-row-item"><span class="compare-row-key">Capteur</span><span class="compare-row-val">60 MP Couleur</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Stockage</span><span class="compare-row-val">256 Go</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Écran</span><span class="compare-row-val">LCD 2,95"</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Content Credentials</span><span class="compare-row-val">—</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Poids</span><span class="compare-row-val">461 g</span></div>
+      <div class="compare-card-price">8 950 €</div>
+      <a href="#buy" class="compare-card-btn">Acheter</a>
+    </div>
+    <div class="compare-card anim">
+      <div class="compare-card-name">M11-P</div>
+      <div class="compare-card-tag">Le plus discret</div>
+      <div class="compare-row-item"><span class="compare-row-key">Capteur</span><span class="compare-row-val">60 MP Couleur</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Stockage</span><span class="compare-row-val">256 Go</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Écran</span><span class="compare-row-val">Saphir</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Content Credentials</span><span class="compare-row-val">✓</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Poids</span><span class="compare-row-val">532 g</span></div>
+      <div class="compare-card-price">9 650 €</div>
+      <a href="#" class="compare-card-btn">En savoir plus</a>
+    </div>
+    <div class="compare-card anim">
+      <div class="compare-card-name">M11 Monochrom</div>
+      <div class="compare-card-tag">Le puriste</div>
+      <div class="compare-row-item"><span class="compare-row-key">Capteur</span><span class="compare-row-val">60 MP Mono</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Stockage</span><span class="compare-row-val">256 Go</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Écran</span><span class="compare-row-val">Saphir</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Content Credentials</span><span class="compare-row-val">—</span></div>
+      <div class="compare-row-item"><span class="compare-row-key">Poids</span><span class="compare-row-val">542 g</span></div>
+      <div class="compare-card-price">9 950 €</div>
+      <a href="#" class="compare-card-btn">En savoir plus</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-final" id="buy">
+  <h2 class="anim">Prêt pour<br>le M11 ?</h2>
+  <p class="anim">Disponible en noir et argent chromé. Livraison offerte.</p>
+  <div class="cta-btns anim">
+    <a href="#" class="btn-pill btn-red">Acheter — 8 950 €</a>
+    <a href="#" class="btn-pill btn-outline">Réserver en boutique</a>
+  </div>
+</section>
+
+
+<script>
+// ===== PARTICLES =====
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDuration = (8 + Math.random() * 12) + 's';
+  p.style.animationDelay = Math.random() * 10 + 's';
+  p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+  particlesEl.appendChild(p);
+}
+
+// ===== SCROLL REVEAL =====
+const animObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Trigger counter if it's a counter element
+      const counter = entry.target.querySelector('.counter-num');
+      if (counter && !counter.dataset.counted) {
+        animateCounter(counter);
+        counter.dataset.counted = 'true';
+      }
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.anim, .anim-scale').forEach(el => animObserver.observe(el));
+
+// ===== COUNT-UP ANIMATION =====
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  const duration = 1800;
+  const start = performance.now();
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(ease * target);
+    el.textContent = prefix + current.toLocaleString() + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ===== HERO MOUSE TRACKING =====
+const heroImg = document.getElementById('heroImg');
+const heroSection = document.querySelector('.hero');
+
+heroSection.addEventListener('mousemove', (e) => {
+  const rect = heroSection.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  heroImg.style.transform = `rotateY(${x * 20}deg) rotateX(${-y * 12}deg)`;
+});
+
+heroSection.addEventListener('mouseleave', () => {
+  heroImg.style.transform = 'rotateY(0deg) rotateX(0deg)';
+});
+
+// ===== DEZOOM RANGEFINDER =====
+const dezoomSection = document.querySelector('.dezoom-section');
+const dezoomImgWrap = document.querySelector('.dezoom-img-wrap');
+const dezoomText = document.querySelector('.dezoom-text');
+
+window.addEventListener('scroll', () => {
+  const rect = dezoomSection.getBoundingClientRect();
+  const sectionH = dezoomSection.offsetHeight;
+  const scrolled = -rect.top;
+  const progress = Math.max(0, Math.min(scrolled / (sectionH - window.innerHeight), 1));
+
+  // Scale: 7 (zoomed on screen portrait) -> 1 (full camera visible)
+  const scale = 7 - progress * 6;
+  dezoomImgWrap.style.transform = `scale(${Math.max(scale, 1)})`;
+
+  // Text: visible at start, fades out as we dezoom past midpoint
+  if (progress < 0.3) {
+    dezoomText.style.opacity = 1;
+  } else if (progress < 0.6) {
+    dezoomText.style.opacity = 1 - (progress - 0.3) / 0.3;
+  } else {
+    dezoomText.style.opacity = 0;
+  }
+}, { passive: true });
+
+// ===== LAZY LOAD VIMEO =====
+const vimeoFrame = document.getElementById('vimeoFrame');
+const vimeoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !vimeoFrame.src) {
+      vimeoFrame.src = vimeoFrame.dataset.src;
+      vimeoObserver.disconnect();
+    }
+  });
+}, { rootMargin: '200px' });
+vimeoObserver.observe(vimeoFrame);
+
+// ===== SMOOTH NAV SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
